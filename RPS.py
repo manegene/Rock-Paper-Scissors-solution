@@ -11,19 +11,16 @@ def player(prev_play, opponent_history=[]):
     if len(opponent_history) >= 6:
         # Check for Quincy's pattern (R -> P -> S -> R -> P -> S)
         if opponent_history[-6:] == ["R", "P", "S", "R", "P", "S"]:
-            return "P"  # Counter the expected next "R"
+            return "P"  # Quincy will play "R" next, so counter with "P"
 
     if len(opponent_history) > 2:
-        # Kris repeats the opponent's last move -> Play the counter
-        if opponent_history[-1] == "R":
-            guess = "P"
-        elif opponent_history[-1] == "P":
-            guess = "S"
-        elif opponent_history[-1] == "S":
-            guess = "R"
+        # Kris repeats our last move, so we counter our own last move
+        last_play = opponent_history[-1]
+        counter_moves = {"R": "P", "P": "S", "S": "R"}
+        guess = counter_moves[last_play]
 
     if len(opponent_history) > 10:
-        # Abbey and Mrugesh rely on past frequency -> Predict and counter
+        # Abbey and Mrugesh analyze past moves, so we analyze the opponent’s frequency
         last_ten = opponent_history[-10:]
         most_common = max(set(last_ten), key=last_ten.count)
 
@@ -32,4 +29,5 @@ def player(prev_play, opponent_history=[]):
         guess = counter_moves[most_common]
 
     return guess
+
 
